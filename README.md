@@ -50,3 +50,6 @@ X11 in Applications/Utilities
 ## Other imp links:
 - https://cran.r-project.org/bin/macosx/
 - for tools :https://cran.r-project.org/bin/macosx/tools/
+
+## R cheet sheets are available at:
+* https://drive.google.com/open?id=1MZymtbqyGaFy9mHtI8di8kh1kxyz785o
