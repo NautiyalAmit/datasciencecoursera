@@ -1,0 +1,203 @@
+ In this lesson, we'll see how to extract elements from a vector based on some conditions that we specify.
+
+
+For example, we may only be interested in the first 20 elements of a vector, or only the elements that are not NA, or only those that are positive or correspond to a specific variable of interest. By the end of this lesson, you'll know how to handle each of these scenarios.
+
+ I've created for you a vector called x that contains a random ordering of 20 numbers (from a standard normal distribution) and 20 NAs. Type x now to see what it looks like.
+
+> x
+ [1]  1.179447648  0.886526609 -0.983741975  0.402196523  0.643570119           NA
+ [7]  0.014345677 -0.761776620           NA           NA -0.008880894           NA
+[13]  0.553961647           NA -0.776604644           NA  0.049517769  1.147594608
+[19]           NA  0.998263151           NA           NA -0.270531173           NA
+[25] -0.346510245           NA           NA           NA  0.139626898           NA
+[31]           NA           NA           NA           NA -0.574741479           NA
+[37]  0.260018819  0.071558693           NA  0.204872057
+
+ The way you tell R that you want to select some particular elements (i.e. a 'subset') from a vector is by placing an 'index vector' in square brackets immediately following the name of the vector.
+
+
+For a simple example, try x[1:10] to view the first ten elements of x.
+
+> x[1:10] 
+ [1]  1.17944765  0.88652661 -0.98374197  0.40219652  0.64357012          NA  0.01434568
+ [8] -0.76177662          NA          NA
+
+Index vectors come in four different flavors -- logical vectors, vectors of positive integers, vectors of negative integers, and vectors of character strings -- each of which we'll cover in this lesson.
+
+Let's start by indexing with logical vectors. One common scenario when working with real-world data is that we want to extract all elements of a vector that are not NA (i.e. missing data). Recall that is.na(x) yields a vector of logical values the same length as x, with TRUEs corresponding to NA values in x and FALSEs corresponding to non-NA values in x.
+
+ What do you think x[is.na(x)] will give you?
+
+1: A vector of all NAs
+2: A vector of TRUEs and FALSEs
+3: A vector of length 0
+4: A vector with no NAs
+
+                                                
+ Prove it to yourself by typing x[is.na(x)].
+
+> x[is.na(x)]
+ [1] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+
+Recall that `!` gives us the negation of a logical expression, so !is.na(x) can be read as 'is not NA'. Therefore, if we want to create a vector called y that contains all of the non-NA values from x, we can use y <- x[!is.na(x)]. Give it a try.
+
+> y <- x[!is.na(x)]
+
+ Print y to the console.
+
+> y
+ [1]  1.179447648  0.886526609 -0.983741975  0.402196523  0.643570119  0.014345677
+ [7] -0.761776620 -0.008880894  0.553961647 -0.776604644  0.049517769  1.147594608
+[13]  0.998263151 -0.270531173 -0.346510245  0.139626898 -0.574741479  0.260018819
+[19]  0.071558693  0.204872057
+
+
+ Now that we've isolated the non-missing values of x and put them in y, we can subset y as we please.
+
+Recall that the expression y > 0 will give us a vector of logical values the same length as y, with TRUEs corresponding to values of y that are greater than zero and FALSEs corresponding to values of y that are less than or equal to zero. What do you think y[y > 0] will give you?
+
+1: A vector of all the positive elements of y
+2: A vector of length 0
+3: A vector of TRUEs and FALSEs
+4: A vector of all NAs
+5: A vector of all the negative elements of y
+
+A vector of all the positive elements of y
+ 
+Type y[y > 0] to see that we get all of the positive elements of y, which are also the positive elements of our original vector x.
+
+> y[y > 0]
+ [1] 1.17944765 0.88652661 0.40219652 0.64357012 0.01434568 0.55396165 0.04951777
+ [8] 1.14759461 0.99826315 0.13962690 0.26001882 0.07155869 0.20487206
+
+
+ You might wonder why we didn't just start with x[x > 0] to isolate the positive elements of x. Try that now to see why.
+
+> x[x > 0]
+ [1] 1.17944765 0.88652661 0.40219652 0.64357012         NA 0.01434568         NA
+ [8]         NA         NA 0.55396165         NA         NA 0.04951777 1.14759461
+[15]         NA 0.99826315         NA         NA         NA         NA         NA
+[22]         NA 0.13962690         NA         NA         NA         NA         NA
+[29]         NA 0.26001882 0.07155869         NA 0.20487206
+
+
+Since NA is not a value, but rather a placeholder for an unknown quantity, the expression NA > 0 evaluates to NA. Hence we get a bunch of NAs mixed in with our  positive numbers when we do this.
+
+ Combining our knowledge of logical operators with our new knowledge of subsetting, we could do this -- x[!is.na(x) & x > 0]. 
+
+> x[!is.na(x) & x > 0]
+ [1] 1.17944765 0.88652661 0.40219652 0.64357012 0.01434568 0.55396165 0.04951777
+ [8] 1.14759461 0.99826315 0.13962690 0.26001882 0.07155869 0.20487206
+
+ In this case, we request only values of x that are both non-missing AND greater than zero.
+
+
+I've already shown you how to subset just the first ten values of x using x[1:10]. In this case, we're providing a vector of positive integers inside of the square brackets, which tells R to return only the elements of x numbered 1 through 10.
+
+Many programming languages use what's called 'zero-based indexing', which means that the first element of a vector is considered element 0. R uses 'one-based indexing', which (you guessed it!) means the first element of a vector is considered element 1.
+
+ Can you figure out how we'd subset the 3rd, 5th, and 7th elements of x? Hint -- Use the c() function to specify the element numbers as a numeric vector.
+
+ 
+> x
+ [1]  1.179447648  0.886526609 -0.983741975  0.402196523  0.643570119           NA
+ [7]  0.014345677 -0.761776620           NA           NA -0.008880894           NA
+[13]  0.553961647           NA -0.776604644           NA  0.049517769  1.147594608
+[19]           NA  0.998263151           NA           NA -0.270531173           NA
+[25] -0.346510245           NA           NA           NA  0.139626898           NA
+[31]           NA           NA           NA           NA -0.574741479           NA
+[37]  0.260018819  0.071558693           NA  0.204872057
+
+
+
+Create a vector of indexes with c(3, 5, 7), then put that inside of the square brackets.
+> x[c(3,5,7)]
+[1] -0.98374197  0.64357012  0.01434568
+
+It's important that when using integer vectors to subset our vector x, we stick with  the set of indexes {1, 2, ..., 40} since x only has 40 elements. What happens if we ask for the zeroth element of x (i.e. x[0])? Give it a try.
+
+> x[0]
+numeric(0)
+
+ As you might expect, we get nothing useful. Unfortunately, R doesn't prevent us from doing this. What if we ask for the 3000th element of x? 
+
+> x[3000]
+[1] NA
+
+Again, nothing useful, but R doesn't prevent us from asking for it. This should be a  cautionary tale. You should always make sure that what you are asking for is within  the bounds of the vector you're working with.
+
+ What if we're interested in all elements of x EXCEPT the 2nd and 10th? It would be pretty tedious to construct a vector containing all numbers 1 through 40 EXCEPT 2 and 10.
+
+ Luckily, R accepts negative integer indexes. Whereas x[c(2, 10)] gives us ONLY the 2nd and 10th elements of x, x[c(-2, -10)] gives us all elements of x EXCEPT for the 2nd and 10 elements.  Try x[c(-2, -10)] now to see this.
+
+> x[c(-2, -10)]
+ [1]  1.179447648 -0.983741975  0.402196523  0.643570119           NA  0.014345677
+ [7] -0.761776620           NA -0.008880894           NA  0.553961647           NA
+[13] -0.776604644           NA  0.049517769  1.147594608           NA  0.998263151
+[19]           NA           NA -0.270531173           NA -0.346510245           NA
+[25]           NA           NA  0.139626898           NA           NA           NA
+[31]           NA           NA -0.574741479           NA  0.260018819  0.071558693
+[37]           NA  0.204872057
+
+ A shorthand way of specifying multiple negative numbers is to put the negative sign out in front of the vector of positive numbers. Type x[-c(2, 10)] to get the exact same result.
+
+> x[-c(2, 10)]
+ [1]  1.179447648 -0.983741975  0.402196523  0.643570119           NA  0.014345677
+ [7] -0.761776620           NA -0.008880894           NA  0.553961647           NA
+[13] -0.776604644           NA  0.049517769  1.147594608           NA  0.998263151
+[19]           NA           NA -0.270531173           NA -0.346510245           NA
+[25]           NA           NA  0.139626898           NA           NA           NA
+[31]           NA           NA -0.574741479           NA  0.260018819  0.071558693
+[37]           NA  0.204872057
+
+ So far, we've covered three types of index vectors -- logical, positive integer, and negative integer. The only remaining type requires us to introduce the concept of 'named' elements.
+
+ Create a numeric vector with three named elements using vect <- c(foo = 11, bar = 2,norf = NA).
+
+> vect <- c(foo = 11, bar = 2,norf = NA)
+
+ When we print vect to the console, you'll see that each element has a name. Try it out.
+
+> vect
+ foo  bar norf 
+  11    2   NA 
+
+ We can also get the names of vect by passing vect as an argument to the names() function. Give that a try.
+
+> names(vect)
+[1] "foo"  "bar"  "norf"
+
+ Alternatively, we can create an unnamed vector vect2 with c(11, 2, NA).
+
+> vect2<-c(11, 2, NA)
+
+ Then, we can add the `names` attribute to vect2 after the fact with names(vect2) <-c("foo", "bar", "norf"). Go ahead.
+
+> names(vect2) <- c("foo", "bar", "norf")
+
+ Now, let's check that vect and vect2 are the same by passing them as arguments to the identical() function.
+
+> identical(vect ,vect2)
+[1] TRUE
+ 
+ Indeed, vect and vect2 are identical named vectors.
+
+ Now, back to the matter of subsetting a vector by named elements. Which of the following commands do you think would give us the second element of vect?
+
+1: vect["2"]
+2: vect["bar"]
+3: vect[bar]
+
+ Now, try it out.
+
+
+> vect["bar"]
+bar 
+  2 
+
+Likewise, we can specify a vector of names with vect[c("foo", "bar")]. Try it out. 
+> vect[c("foo", "bar")]
+foo bar 
+ 11   2 
+
